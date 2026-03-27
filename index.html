@@ -84,7 +84,7 @@
         </header>
 
         <nav class="tabs">
-            <button class="tab-btn active" data-tab="inventory">📦 Инвентаризация</button>
+            <button class="tab-btn active" data-tab="inventory">📦 Сравнение 1</button>
             <button class="tab-btn" data-tab="order">🛒 Заказ АЗС</button>
             <button class="tab-btn" data-tab="reports">📊 Отчеты</button>
             <button class="tab-btn" data-tab="settings">⚙️ Настройки</button>
@@ -93,7 +93,7 @@
         <!-- Вкладка 1: Инвентаризация -->
         <section id="inventory" class="tab-content active">
             <div class="section-header">
-                <h2>📋 ВВОД ОСТАТКОВ ТОВАРОВ</h2>
+                <h2>📋 Сравнение товаров</h2>
                 <div>
                     <button class="btn btn-primary" id="btn-save-inventory" onclick="saveToGoogle('inventory')" disabled>💾 Сохранить</button>
                     <button class="btn btn-secondary" onclick="resetForm('inventory')">🔄 Сброс</button>
@@ -109,7 +109,7 @@
             </form>
 
             <div class="summary-box">
-                <h3>📈 Сводка по остаткам</h3>
+                <h3>📈 Сводка по сравнению характеристик</h3>
                 <div id="inventory-summary">
                     <div class="summary-item"><span>Всего товаров:</span><span id="inv-total-count">0 позиций</span></div>
                     <div class="summary-item"><span>Общее количество:</span><span id="inv-total">0 шт.</span></div>
@@ -151,7 +151,7 @@
             <div class="section-header"><h2>📊 Отчеты</h2></div>
             <div class="report-cards">
                 <div class="card">
-                    <div class="card-header"><h3>📦 Инвентаризация</h3><span class="card-badge" id="inv-badge">0/0</span></div>
+                    <div class="card-header"><h3>📦 Сравнение 1</h3><span class="card-badge" id="inv-badge">0/0</span></div>
                     <div class="card-body"><p id="inventory-last-update">Последнее обновление: нет данных</p></div>
                     <div class="card-actions"><button class="btn btn-secondary" onclick="exportToExcel('inventory')">📥 Экспорт</button></div>
                 </div>
@@ -439,7 +439,7 @@
             
             if (type === 'inventory') {
                 data = inventoryData;
-                message = 'Данные инвентаризации сохранены';
+                message = 'Данные Сравнения сохранены';
             } else {
                 data = orderData;
                 message = 'Данные заказа АЗС сохранены';
