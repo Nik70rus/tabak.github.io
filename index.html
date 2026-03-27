@@ -52,8 +52,8 @@
         .settings-card h3 { color: #333; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e0e0e0; font-size: 1em; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-weight: 500; margin-bottom: 5px; color: #333; font-size: 0.85em; }
-        .form-group input[type="text"], .form-group textarea { width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 5px; font-size: 0.85em; font-family: monospace; }
-        .form-group input[type="text"]:focus, .form-group textarea:focus { outline: none; border-color: #2E8B57; }
+        .form-group input[type="text"] { width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 5px; font-size: 0.85em; }
+        .form-group input[type="text"]:focus { outline: none; border-color: #2E8B57; }
         .form-group small { display: block; margin-top: 3px; color: #666; font-size: 0.75em; }
         .settings-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
         .settings-actions .btn { flex: 1; min-width: 120px; }
@@ -84,7 +84,7 @@
         </header>
 
         <nav class="tabs">
-            <button class="tab-btn active" data-tab="inventory">📦 Заказ 1</button>
+            <button class="tab-btn active" data-tab="inventory">📦 Инвентаризация</button>
             <button class="tab-btn" data-tab="order">🛒 Заказ АЗС</button>
             <button class="tab-btn" data-tab="reports">📊 Отчеты</button>
             <button class="tab-btn" data-tab="settings">⚙️ Настройки</button>
@@ -93,7 +93,7 @@
         <!-- Вкладка 1: Инвентаризация -->
         <section id="inventory" class="tab-content active">
             <div class="section-header">
-                <h2>📋 Ознакомление с товарами</h2>
+                <h2>📋 ВВОД ОСТАТКОВ ТОВАРОВ</h2>
                 <div>
                     <button class="btn btn-primary" id="btn-save-inventory" onclick="saveToGoogle('inventory')" disabled>💾 Сохранить</button>
                     <button class="btn btn-secondary" onclick="resetForm('inventory')">🔄 Сброс</button>
@@ -151,7 +151,7 @@
             <div class="section-header"><h2>📊 Отчеты</h2></div>
             <div class="report-cards">
                 <div class="card">
-                    <div class="card-header"><h3>📦 Заказ 1</h3><span class="card-badge" id="inv-badge">0/0</span></div>
+                    <div class="card-header"><h3>📦 Инвентаризация</h3><span class="card-badge" id="inv-badge">0/0</span></div>
                     <div class="card-body"><p id="inventory-last-update">Последнее обновление: нет данных</p></div>
                     <div class="card-actions"><button class="btn btn-secondary" onclick="exportToExcel('inventory')">📥 Экспорт</button></div>
                 </div>
@@ -171,33 +171,22 @@
                     <h3>🔗 Google Apps Script</h3>
                     <div class="form-group">
                         <label for="gas-url">Google Apps Script URL</label>
-                        <input type="text" id="gas-url" placeholder="https://script.google.com/macros/s/.../exec">
-                        <small>URL веб-приложения Google Apps Script</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="gas-code">Код Google Apps Script</label>
-                        <textarea id="gas-code" rows="10" placeholder="Вставьте код Google Apps Script здесь..."></textarea>
-                        <small>Скопируйте этот код в Apps Script вашей таблицы</small>
+                        <input type="text" id="gas-url" value="https://script.google.com/macros/s/AKfycbxp7AKgFjL038I3BEby_gQHYhm00vKg5MC9aiSt4yMpTsQo1tkPI1YVtLOmvwYPbDLV/exec" readonly>
+                        <small>URL предустановлен. Измените если нужно.</small>
                     </div>
                     <div class="settings-actions">
                         <button class="btn btn-primary" onclick="saveSettings()">💾 Сохранить</button>
                         <button class="btn btn-secondary" onclick="testConnection()">🧪 Тест</button>
-                        <button class="btn btn-secondary" onclick="copyScriptCode()">📋 Копировать код</button>
                     </div>
                 </div>
                 <div class="settings-card">
-                    <h3>📝 Инструкция</h3>
+                    <h3>📝 Информация</h3>
                     <div class="help-box">
-                        <h4>Как настроить:</h4>
-                        <ol>
-                            <li>Откройте Google Таблицу</li>
-                            <li>Расширения → Apps Script</li>
-                            <li>Вставьте код из поля выше</li>
-                            <li>Развернуть → Новое развертывание</li>
-                            <li>Тип: Веб-приложение, Доступ: Все</li>
-                            <li>Скопируйте URL и вставьте выше</li>
-                            <li>Нажмите "Тест" для проверки</li>
-                        </ol>
+                        <h4>Настройки подключены:</h4>
+                        <p>✅ URL Google Apps Script уже настроен</p>
+                        <p>✅ Данные загружаются автоматически</p>
+                        <p>✅ Листы: <b>Список1</b> (инвентарь), <b>СписокАЗС</b> (заказ)</p>
+                        <p style="margin-top: 10px;"><b>Для проверки работы:</b> нажмите кнопку "Тест"</p>
                     </div>
                 </div>
             </div>
@@ -217,6 +206,11 @@
 
     <script>
         // ============================================
+        // ПРЕДУСТАНОВЛЕННЫЙ URL СКРИПТА
+        // ============================================
+        const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxp7AKgFjL038I3BEby_gQHYhm00vKg5MC9aiSt4yMpTsQo1tkPI1YVtLOmvwYPbDLV/exec';
+        
+        // ============================================
         // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
         // ============================================
         
@@ -224,7 +218,7 @@
         let orderProducts = {};
         let inventoryData = {};
         let orderData = {};
-        let settings = { gasUrl: '' };
+        let settings = { gasUrl: DEFAULT_GAS_URL };
 
         // ============================================
         // ИНИЦИАЛИЗАЦИЯ
@@ -233,15 +227,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeTabs();
             loadSettings();
-            loadDefaultScriptCode();
             
             // Загружаем данные из Google Sheets
-            if (settings.gasUrl) {
-                loadInventoryList();
-                loadOrderList();
-            } else {
-                showModal('⚠️ Настройка', 'Пожалуйста, настройте Google Apps Script URL в разделе Настройки');
-            }
+            loadInventoryList();
+            loadOrderList();
         });
 
         // ============================================
@@ -285,7 +274,7 @@
                     throw new Error(result.message || 'Ошибка загрузки');
                 }
             } catch (error) {
-                infoBox.innerHTML = `❌ Ошибка: ${error.message}. Проверьте URL и настройки`;
+                infoBox.innerHTML = `❌ Ошибка: ${error.message}. Проверьте соединение`;
                 infoBox.style.background = '#f8d7da';
                 infoBox.style.borderColor = '#dc3545';
                 console.error('Error loading inventory:', error);
@@ -329,7 +318,7 @@
                     throw new Error(result.message || 'Ошибка загрузки');
                 }
             } catch (error) {
-                infoBox.innerHTML = `❌ Ошибка: ${error.message}. Проверьте URL и настройки`;
+                infoBox.innerHTML = `❌ Ошибка: ${error.message}. Проверьте соединение`;
                 infoBox.style.background = '#f8d7da';
                 infoBox.style.borderColor = '#dc3545';
                 console.error('Error loading order:', error);
@@ -441,7 +430,7 @@
         
         async function saveToGoogle(type) {
             if (!settings.gasUrl) {
-                showModal('⚠️ Ошибка', 'Настройте Google Apps Script URL');
+                showModal('⚠️ Ошибка', 'URL скрипта не настроен');
                 return;
             }
             
@@ -450,7 +439,7 @@
             
             if (type === 'inventory') {
                 data = inventoryData;
-                message = 'Данные заказ 1 сохранены';
+                message = 'Данные инвентаризации сохранены';
             } else {
                 data = orderData;
                 message = 'Данные заказа АЗС сохранены';
@@ -464,7 +453,7 @@
                     body: JSON.stringify({ type, data, products: orderProducts })
                 });
                 
-                showModal('✅ Успешно', message);
+                showModal('✅ Успешно', message + ' в Google Таблицу');
                 updateSummaries();
             } catch (error) {
                 showModal('❌ Ошибка', 'Не удалось сохранить: ' + error.message);
@@ -503,175 +492,26 @@
             const saved = localStorage.getItem('appSettings');
             if (saved) {
                 settings = JSON.parse(saved);
-                document.getElementById('gas-url').value = settings.gasUrl || '';
             }
-        }
-
-        function loadDefaultScriptCode() {
-            const defaultCode = `// ============================================
-// GOOGLE APPS SCRIPT - Учет табачной продукции
-// ============================================
-
-function doGet(e) {
-  var action = e.parameter.action;
-  
-  if (action === 'getInventoryList') {
-    return getInventoryList();
-  } else if (action === 'getOrderList') {
-    return getOrderList();
-  }
-  
-  return ContentService.createTextOutput(JSON.stringify({status: 'error'}))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    
-    if (data.type === 'inventory') {
-      return saveToSheet(spreadsheet, 'Инвентаризация', data.data, 'inventory');
-    } else if (data.type === 'order') {
-      return saveToSheet(spreadsheet, 'Заказ АЗС', data.data, 'order');
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({status: 'success'}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({status: 'error', message: error.toString()}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function getInventoryList() {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Список1');
-    if (!sheet) return errorResponse('Лист "Список1" не найден');
-    
-    var lastRow = sheet.getLastRow();
-    var products = [];
-    
-    if (lastRow > 1) {
-      var data = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
-      for (var i = 0; i < data.length; i++) {
-        if (data[i][0] && data[i][0].toString().trim() !== '') {
-          products.push(data[i][0].toString().trim());
-        }
-      }
-    }
-    
-    return successResponse({data: products, count: products.length});
-  } catch (error) {
-    return errorResponse(error.toString());
-  }
-}
-
-function getOrderList() {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('СписокАЗС');
-    if (!sheet) return errorResponse('Лист "СписокАЗС" не найден');
-    
-    var lastRow = sheet.getLastRow();
-    var products = {};
-    
-    if (lastRow > 1) {
-      var data = sheet.getRange(2, 1, lastRow - 1, 2).getValues();
-      for (var i = 0; i < data.length; i++) {
-        var art = data[i][0] ? data[i][0].toString().trim() : '';
-        var name = data[i][1] ? data[i][1].toString().trim() : '';
-        if (art && name) products[art] = name;
-      }
-    }
-    
-    return successResponse({data: products, count: Object.keys(products).length});
-  } catch (error) {
-    return errorResponse(error.toString());
-  }
-}
-
-function saveToSheet(spreadsheet, sheetName, data, type) {
-  var sheet = spreadsheet.getSheetByName(sheetName);
-  
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet(sheetName);
-    var headers = type === 'inventory' 
-      ? ['Дата', 'Время', 'Товар', 'Количество', 'Статус']
-      : ['Дата', 'Время', 'Артикул', 'Товар', 'Количество'];
-    sheet.appendRow(headers);
-    formatHeader(sheet);
-  }
-  
-  var timestamp = new Date();
-  var date = Utilities.formatDate(timestamp, 'Europe/Moscow', 'yyyy-MM-dd');
-  var time = Utilities.formatDate(timestamp, 'Europe/Moscow', 'HH:mm:ss');
-  
-  if (type === 'inventory') {
-    for (var product in data) {
-      var quantity = data[product];
-      var status = quantity > 0 ? 'В наличии' : 'Нет в наличии';
-      sheet.appendRow([date, time, product, quantity, status]);
-    }
-  } else {
-    for (var art in data) {
-      var quantity = data[art];
-      if (quantity > 0) {
-        sheet.appendRow([date, time, art, art, quantity]);
-      }
-    }
-  }
-  
-  return successResponse({message: 'Данные сохранены'});
-}
-
-function formatHeader(sheet) {
-  var headerRange = sheet.getRange(1, 1, 1, 5);
-  headerRange.setBackground('#2E8B57');
-  headerRange.setFontColor('#FFFFFF');
-  headerRange.setFontWeight('bold');
-  sheet.setFrozenRows(1);
-}
-
-function successResponse(data) {
-  return ContentService.createTextOutput(JSON.stringify({status: 'success', ...data}))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function errorResponse(message) {
-  return ContentService.createTextOutput(JSON.stringify({status: 'error', message: message}))
-    .setMimeType(ContentService.MimeType.JSON);
-}`;
-            
-            document.getElementById('gas-code').value = defaultCode;
-        }
-
-        function copyScriptCode() {
-            const codeField = document.getElementById('gas-code');
-            codeField.select();
-            document.execCommand('copy');
-            showModal('✅ Скопировано', 'Код Google Apps Script скопирован в буфер обмена');
+            document.getElementById('gas-url').value = settings.gasUrl || DEFAULT_GAS_URL;
         }
 
         function testConnection() {
-            const url = document.getElementById('gas-url').value.trim();
-            if (!url) {
-                showModal('⚠️ Ошибка', 'Введите Google Apps Script URL');
-                return;
-            }
+            const url = settings.gasUrl;
             
-            showModal('🔄 Проверка', 'Проверка соединения...');
+            showModal('🔄 Проверка', 'Проверка соединения с Google Apps Script...');
             
             fetch(`${url}?action=getInventoryList`, { method: 'GET' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        showModal('✅ Успешно', `Соединение установлено! Загружено ${data.count} товаров`);
+                        showModal('✅ Успешно', `Соединение установлено!\n\nЗагружено ${data.count} товаров из листа "Список1"\n\nURL: ${url.substring(0, 50)}...`);
                     } else {
-                        showModal('⚠️ Внимание', 'Соединение есть, но есть проблемы: ' + (data.message || ''));
+                        showModal('⚠️ Внимание', 'Соединение есть, но есть проблемы:\n\n' + (data.message || 'Неизвестная ошибка'));
                     }
                 })
                 .catch(error => {
-                    showModal('❌ Ошибка', 'Не удалось подключиться: ' + error.message);
+                    showModal('❌ Ошибка', 'Не удалось подключиться:\n\n' + error.message + '\n\nПроверьте:\n1. Доступность интернета\n2. Корректность URL скрипта\n3. Развернут ли скрипт как веб-приложение');
                 });
         }
 
